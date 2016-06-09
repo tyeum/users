@@ -1,7 +1,83 @@
 ---
-# tasks file for ansible-role-example
+# tasks file for ansible-role-users
 
 - assert:
     that:
-        - ansible_os_family == 'OpenBSD'
-        - ansible_distribution_release == '5.9'
+        - ansible_os_family in [ 'OpenBSD', 'Debian' ]
+        - users is defined
+
+- name: APT install sudo
+  when: ansible_pkg_mgr == 'apt'
+  apt:
+      name: sudo
+      state: present
+      update_cache: yes
+      cache_valid_time: 3600
+
+- name: Pkg install sudo
+  when: ansible_pkg_mgr == 'openbsd_pkg' and ansible_distribution_release > 5.9
+  openbsd_pkg:
+      name: sudo
+      state: present
+
+- name: Create needed groups
+  with_items: '{{ users|sum(attribute="groups", start=[])|list|unique }}'
+  group:
+      name: '{{ item }}'
+      state: present
+
+- name: Create sudoers group
+  group:
+      name: sudoers
+      state: present
+
+- name: Create sudoers.d directory
+  file:
+      path: /etc/sudoers.d
+      state: directory
+      owner: root
+      group: 0
+      mode: '0755'
+
+- name: Include sudoers.d/*
+  lineinfile:
+      dest: /etc/sudoers
+      line: '#includedir /etc/sudoers.d'
+      state: present
+
+- name: Allow sudo without password to sudoers
+  lineinfile:
+      dest: '/etc/sudoers.d/50_sudoers'
+      line: '%sudoers ALL=(ALL) NOPASSWD: ALL'
+      regexp: '^%sudoers'
+      state: present
+      create: yes
+
+- name: Create users
+  with_items: '{{ users }}'
+  user:
+      append: yes
+      name: '{{ item.name }}'
+      createhome: yes
+      shell: '{{ item.shell|default("/bin/ksh" if ansible_os_family == "OpenBSD" else "/bin/bash") }}'
+      groups: '{{ item.groups|join(",") }}'
+      state: present
+      uid: '{{ item.uid|default(omit) }}'
+      password: '{{ item.password|default(omit) }}'
+
+- name: Add public keys
+  with_items: '{{ users }}'
+  when: '{{ item.pubkeys is defined }}'
+  authorized_key:
+      key: '{{  item.pubkeys|join ("\n") }}'
+      user: '{{ item.name }}'
+      state: present
+
+- name: Add email aliases
+  with_items: '{{ users }}'
+  when: '{{ item.email is defined }}'
+  lineinfile:
+      dest: /etc/aliases
+      create: yes
+      line: '{{ item.name }}: {{ item.email }}'
+      regexp: '^{{ item.name }}:'
