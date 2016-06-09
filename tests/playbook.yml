@@ -7,6 +7,9 @@
 - hosts: all
   vars:
       users:
+          - name: root
+            password: '!'
+            email: none@nowhere.com
           - name: dummy
             groups:
                 - people

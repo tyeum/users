@@ -5,3 +5,7 @@
   service:
       name: '{{ ssh_daemon[ansible_os_family] }}'
       state: restarted
+
+- name: Update SMTPd database
+  when: ansible_os_family == 'OpenBSD'
+  command: /usr/sbin/makemap /etc/mail/aliases

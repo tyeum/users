@@ -4,3 +4,7 @@
 ssh_daemon:
     OpenBSD: sshd
     Debian: ssh
+
+aliases_file:
+    OpenBSD: /etc/mail/aliases
+    Debian: /etc/aliases
