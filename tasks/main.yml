@@ -81,3 +81,20 @@
       create: yes
       line: '{{ item.name }}: {{ item.email }}'
       regexp: '^{{ item.name }}:'
+
+- name: Disable root local login
+  when: users_lock_root
+  user:
+      name: root
+      password: '!'
+  register: lock_root
+  changed_when: not (lock_root.stderr is defined and 'no changes' in lock_root.stderr)
+
+- name: Disable root login via SSH
+  when: users_lock_root
+  lineinfile:
+      dest: /etc/ssh/sshd_config
+      line: 'PermitRootLogin no'
+      regexp: '^PermitRootLogin '
+  notify:
+      - Restart ssh

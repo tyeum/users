@@ -6,7 +6,9 @@ or NIS server. The role also installs sudo and creates a sudoers group that can
 use sudo with a password. A password is also set if provided. For generating the
 password hash needed, under Debian run: :code:`echo MyPassword | mkpasswd -m
 sha-512 -s` and under OpenBSD run: :code:`echo MyPassword | encrypt`. If
-provided, email alias and SSH authorized keys are set.
+provided, email alias and SSH authorized keys are set. If
+:code:`users_lock_root` is set to :code:`True` (by default it is) then local and
+SSH root login is disabled.
 
 Requirements
 ------------
@@ -31,6 +33,8 @@ Role Variables
       password: optional
       pubkeys: optional list of public SSH keys
       email: optional, used for mail forwarding
+
+    users_lock_root: boolean, default to True
 
 Dependencies
 ------------

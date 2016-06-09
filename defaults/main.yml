@@ -1,2 +1,4 @@
 ---
 # defaults file for ansible-role-users
+
+users_lock_root: True
