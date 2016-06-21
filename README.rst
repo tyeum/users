@@ -1,9 +1,10 @@
 Users
 #####
 
-An Ansible role to create users. The use case is to replace setting up an LDAP
-or NIS server. The role also installs sudo and creates a sudoers group that can
-use sudo with a password. A password is also set if provided. For generating the
+An Ansible role to create users, groups, email aliases, configure sudo and lock
+down root account. The intended use case is to replace setting up an LDAP or
+NIS server. The role also installs sudo and creates a sudoers group that can use
+sudo with a password. A password is also set if provided. For generating the
 password hash needed, under Debian run: :code:`echo MyPassword | mkpasswd -m
 sha-512 -s` and under OpenBSD run: :code:`echo MyPassword | encrypt`. If
 provided, email alias and SSH authorized keys are set. If
@@ -17,11 +18,9 @@ Requirements
 ------------
 
 - `Ansible 2.0 or later <https://www.ansible.com/>`_.
-- The following OSes:
-  - `OpenBSD 5.9 or later <http://www.openbsd.org/>`_ (older versions should
-    work but aren't tested).
-  - `Debian Jessie or later <http://www.debian.org/>`_ (older versions should
-    work but aren't tested, Ubuntu should also work).
+- `OpenBSD <http://www.openbsd.org/>`_ or `Debian <http://www.debian.org/>`_
+  (OpenBSD 5.9 and Debian Jessie are tested, other versions and derivatives
+  should also work).
 
 Role Variables
 --------------

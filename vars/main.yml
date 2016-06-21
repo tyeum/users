@@ -8,3 +8,5 @@ ssh_daemon:
 aliases_file:
     OpenBSD: /etc/mail/aliases
     Debian: /etc/aliases
+
+users_unique_groups: '{{ users|selectattr("groups", "defined")|sum(attribute="groups", start=[])|list|unique }}'

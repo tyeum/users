@@ -21,7 +21,8 @@
       state: present
 
 - name: Create needed groups
-  with_items: '{{ users|sum(attribute="groups", start=[])|list|unique }}'
+  when: users_unique_groups|length > 0
+  with_items: '{{ users_unique_groups }}'
   group:
       name: '{{ item }}'
       state: present
@@ -60,7 +61,7 @@
       name: '{{ item.name }}'
       createhome: yes
       shell: '{{ item.shell|default("/bin/ksh" if ansible_os_family == "OpenBSD" else "/bin/bash") }}'
-      groups: '{{ item.groups|join(",") }}'
+      groups: '{{ item.groups|join(",") if item.groups is defined else omit }}'
       state: present
       uid: '{{ item.uid|default(omit) }}'
       password: '{{ item.password|default(omit) }}'
