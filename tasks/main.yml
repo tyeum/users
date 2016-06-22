@@ -20,16 +20,12 @@
       name: sudo
       state: present
 
-- name: Create needed groups
-  when: users_unique_groups|length > 0
-  with_items: '{{ users_unique_groups }}'
+- name: Create groups
+  with_flattened:
+      - '{{ users_unique_groups }}'
+      - [sudoers]
   group:
       name: '{{ item }}'
-      state: present
-
-- name: Create sudoers group
-  group:
-      name: sudoers
       state: present
 
 - name: Create sudoers.d directory
