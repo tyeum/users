@@ -8,7 +8,7 @@
   vars:
       users:
           - name: root
-            password: '!'
+            password: '*'
             email: none@nowhere.com
           - name: dummy
             groups:
