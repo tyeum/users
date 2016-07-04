@@ -17,26 +17,12 @@ forwarding.
 Requirements
 ------------
 
-- `Ansible 2.0 or later <https://www.ansible.com/>`_.
-- `OpenBSD <http://www.openbsd.org/>`_ or `Debian <http://www.debian.org/>`_
-  (OpenBSD 5.9 and Debian Jessie are tested, other versions and derivatives
-  should also work).
+See :code:`meta/main.yml` and assertions at top of :code:`tasks/main.yml`.
 
 Role Variables
 --------------
 
-.. code:: yaml
-
-    users:
-    - name: mandatory
-      groups: optional, list of other groups
-      shell: optional
-      uid: optional
-      password: optional
-      pubkeys: optional list of public SSH keys
-      email: optional, used for mail forwarding
-
-    users_lock_root: boolean, default to True
+See :code:`defaults/main.yml`.
 
 Dependencies
 ------------

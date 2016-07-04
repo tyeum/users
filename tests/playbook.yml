@@ -8,7 +8,8 @@
   vars:
       users:
           - name: root
-            password: '*'
+            password: '*************'
+            #password: '$2b$08$fb169zHBZ/uBGVUMVTMnxus4PssSMMI7qJunmSByiVT134MxpGH1C'
             email: none@nowhere.com
           - name: dummy
             groups:

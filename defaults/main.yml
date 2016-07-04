@@ -5,4 +5,10 @@ users_lock_root: True
 
 users:
     - name: root
-      password: '*'
+      password: '*************'
+      #shell: /bin/bash
+      #uid: 0
+      #groups: sudoers
+      #pubkeys:
+      #- '{{ lookup("file", "id_rsa.pub") }}'
+      #email: none@nowhere.com
