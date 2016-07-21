@@ -15,7 +15,7 @@
       cache_valid_time: 3600
 
 - name: Pkg install sudo
-  when: ansible_pkg_mgr == 'openbsd_pkg' and ansible_distribution_release > 5.9
+  when: ansible_pkg_mgr == 'openbsd_pkg' and ansible_distribution_release | version_compare('5.8', '>=')
   openbsd_pkg:
       name: sudo
       state: present
@@ -49,6 +49,9 @@
       regexp: '^%sudoers'
       state: present
       create: yes
+      owner: root
+      group: 0
+      mode: 0o0440
 
 - name: Create users
   with_items: '{{ users }}'
