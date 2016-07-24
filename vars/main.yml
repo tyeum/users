@@ -9,4 +9,8 @@ aliases_file:
     OpenBSD: /etc/mail/aliases
     Debian: /etc/aliases
 
+users_sudo_pkg:
+    5.8: sudo-1.8.14.3
+    5.9: sudo-1.8.15
+
 users_unique_groups: '{{ users|selectattr("groups", "defined")|sum(attribute="groups", start=[])|list|unique }}'

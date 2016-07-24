@@ -17,13 +17,11 @@
 - name: Pkg install sudo
   when: ansible_pkg_mgr == 'openbsd_pkg' and ansible_distribution_release | version_compare('5.8', '>=')
   openbsd_pkg:
-      name: sudo
+      name: '{{ users_sudo_pkg[ansible_distribution_release] }}'
       state: present
 
 - name: Create groups
-  with_flattened:
-      - '{{ users_unique_groups }}'
-      - [sudoers]
+  with_items: '{{ users_unique_groups|union(["sudoers"]) }}'
   group:
       name: '{{ item }}'
       state: present
