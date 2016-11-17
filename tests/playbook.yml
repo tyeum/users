@@ -1,8 +1,7 @@
 ---
 - hosts: ansible-role-users-openbsd
-  gather_facts: False
-  roles:
-      - ansible-role-openbsd-bootstrap
+  gather_facts: false
+  roles: [openbsd_bootstrap]
 
 - hosts: all
   vars:
