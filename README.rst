@@ -1,6 +1,9 @@
 Users
 #####
 
+.. image:: https://travis-ci.org/adarnimrod/users.svg?branch=master
+    :target: https://travis-ci.org/adarnimrod/users
+
 An Ansible role to create users, groups, email aliases, configure sudo and lock
 down root account. The intended use case is to replace setting up an LDAP or
 NIS server. The role also installs sudo and creates a sudoers group that can use
@@ -17,8 +20,7 @@ forwarding.
 Requirements
 ------------
 
-See :code:`meta/main.yml`, :code:`tests/requirements.yml` and assertions at
-the top of :code:`tasks/main.yml`.
+See :code:`meta/main.yml` and assertions at the top of :code:`tasks/main.yml`.
 
 Role Variables
 --------------
@@ -38,21 +40,22 @@ See :code:`tests/playbook.yml`.
 Testing
 -------
 
-Testing requires Virtualbox and Vagrant and Python 2.7. Install the Python
-dependencies, add pre-commit hooks by running:
+Testing requires Python 2.7 and either Docker or Vagrant and Virtualbox.
+Install the Python dependencies, dependent roles and roles required for
+testing:
 
 .. code:: shell
 
     pip install -r tests/requirements.txt
-    pre-commit install
+    ansible-galaxy install git+file://$(pwd),$(git rev-parse --abbrev-ref HEAD) -p .molecule/roles
+    molecule dependency
 
 To run the full test suite:
 
 .. code:: shell
 
-    ansible-galaxy install git+file://$(pwd),$(git rev-parse --abbrev-ref HEAD) -p .molecule/roles
-    molecule test --platform all
     pre-commit run --all-files
+    molecule test --platform all
 
 License
 -------

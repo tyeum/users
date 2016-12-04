@@ -1,6 +1,5 @@
 ---
-# handlers file for ansible-role-users
-
+# handlers file for users
 - name: Restart ssh
   service:
       name: '{{ ssh_daemon[ansible_os_family] }}'

@@ -1,6 +1,5 @@
 ---
-# vars file for ansible-role-users
-
+# vars file for users
 ssh_daemon:
     OpenBSD: sshd
     Debian: ssh
