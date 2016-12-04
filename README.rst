@@ -14,8 +14,8 @@ provided, email alias and SSH authorized keys are set. If
 :code:`users_lock_root` is set to :code:`True` (by default it is) then local and
 SSH root login is disabled. Another use case is to manage system users, for
 example to disable the local root login add root to the :code:`users` variable
-with the password :code:`!`, setting an email address will also set mail
-forwarding.
+with the password :code:`*************`, setting an email address will also
+set mail forwarding.
 
 Requirements
 ------------
