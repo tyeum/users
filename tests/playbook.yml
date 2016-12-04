@@ -24,9 +24,7 @@
             password: '{{ "$2b$08$tQ5R9gYozyT4axTcKuBieeeVbgCXzZkDuTP4CL7HhQ9kvXRztxsCW" if ansible_os_family == "OpenBSD" else "$6$VWrYt43IIuVoA.G$I3UacUhyEz58NAJgelWJr0EfTmqNGxOqatfYxBH0wzCIZLcsjZ1V0/AAibzTu6KjdsUFSC3Mmjjr0cWHcV8401" }}'
             groups:
                 - people
-  roles:
-    - role: users
-  post_tasks: # For testing purposes
+  pre_tasks:
       - name: APT Install SSH server
         when: ansible_pkg_mgr == 'apt'
         apt:
@@ -38,7 +36,9 @@
         service:
             name: ssh
             state: started
-
+  roles:
+    - role: users
+  post_tasks: # For testing purposes
       - name: Create .ssh directory
         file:
             path: '{{ ansible_user_dir }}/.ssh'
