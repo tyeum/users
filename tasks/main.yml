@@ -82,9 +82,19 @@
   notify:
       - Update SMTPd database
 
+- name: Create ssh directory in case SSH isn't installed
+  when: users_lock_root
+  file:
+      path: /etc/ssh
+      owner: root
+      group: 0
+      mode: 0o0755
+      state: directory
+
 - name: Disable root login via SSH
   when: users_lock_root
   lineinfile:
+      create: yes
       dest: /etc/ssh/sshd_config
       line: 'PermitRootLogin no'
       regexp: '^PermitRootLogin '
