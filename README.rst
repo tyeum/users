@@ -5,17 +5,17 @@ Users
     :target: https://travis-ci.org/adarnimrod/users
 
 An Ansible role to create users, groups, email aliases, configure sudo and lock
-down root account. The intended use case is to replace setting up an LDAP or
-NIS server. The role also installs sudo and creates a sudoers group that can use
-sudo with a password. A password is also set if provided. For generating the
-password hash needed, under Debian run: :code:`echo MyPassword | mkpasswd -m
-sha-512 -s` and under OpenBSD run: :code:`echo MyPassword | encrypt`. If
-provided, email alias and SSH authorized keys are set. If
-:code:`users_lock_root` is set to :code:`True` (by default it is) then local and
-SSH root login is disabled. Another use case is to manage system users, for
-example to disable the local root login add root to the :code:`users` variable
-with the password :code:`*************`, setting an email address will also
-set mail forwarding.
+down root account SSH access. The intended use case is to replace setting up
+an LDAP or NIS server. The role also installs sudo and creates a sudoers group
+that can use sudo with a password. A password is also set if provided. For
+generating the password hash needed, under Debian run: :code:`echo MyPassword
+| mkpasswd -m sha-512 -s` and under OpenBSD run: :code:`echo MyPassword |
+encrypt`. If provided, email alias and SSH authorized keys are set. If
+:code:`users_lock_root_ssh` is set to :code:`True` (by default it is) then SSH
+root login is disabled. Another use case is to manage system users, for example
+to disable the local root login add root to the :code:`users` variable with the
+password :code:`*************`, setting an email address will also set mail
+forwarding.
 
 Requirements
 ------------

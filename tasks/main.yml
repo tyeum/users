@@ -4,52 +4,24 @@
   assert:
     that:
         - ansible_os_family in [ 'OpenBSD', 'Debian' ]
-        - users is defined
+        - users is iterable
+        - users_lock_root_ssh in [ True, False ]
+        - users_use_sudo in [ True, False ]
+        # OpenBSD 5.7 was the last version that came with sudo installed.
+        - >
+            ansible_os_family != 'OpenBSD' or
+            ansible_distribution_release|version_compare('5.7', '<=') or
+            ansible_distribution_release in users_sudo_pkg or
+            not users_use_sudo
 
-- name: APT install sudo
-  when: ansible_pkg_mgr == 'apt'
-  apt:
-      name: sudo
-      state: present
-      update_cache: yes
-      cache_valid_time: 3600
-
-- name: Pkg install sudo
-  when: ansible_pkg_mgr == 'openbsd_pkg' and ansible_distribution_release | version_compare('5.8', '>=')
-  openbsd_pkg:
-      name: '{{ users_sudo_pkg[ansible_distribution_release] }}'
-      state: present
+- include: sudo.yml
+  when: users_use_sudo
 
 - name: Create groups
-  with_items: '{{ users_unique_groups|union(["sudoers"]) }}'
+  with_items: '{{ users_unique_groups }}'
   group:
       name: '{{ item }}'
       state: present
-
-- name: Create sudoers.d directory
-  file:
-      path: /etc/sudoers.d
-      state: directory
-      owner: root
-      group: 0
-      mode: '0755'
-
-- name: Include sudoers.d/*
-  lineinfile:
-      dest: /etc/sudoers
-      line: '#includedir /etc/sudoers.d'
-      state: present
-
-- name: Allow sudo without password to sudoers
-  lineinfile:
-      dest: '/etc/sudoers.d/50_sudoers'
-      line: '%sudoers ALL=(ALL) NOPASSWD: ALL'
-      regexp: '^%sudoers'
-      state: present
-      create: yes
-      owner: root
-      group: 0
-      mode: 0o0440
 
 - name: Create users
   with_items: '{{ users }}'
@@ -82,21 +54,5 @@
   notify:
       - Update SMTPd database
 
-- name: Create ssh directory in case SSH isn't installed
-  when: users_lock_root
-  file:
-      path: /etc/ssh
-      owner: root
-      group: 0
-      mode: 0o0755
-      state: directory
-
-- name: Disable root login via SSH
-  when: users_lock_root
-  lineinfile:
-      create: yes
-      dest: /etc/ssh/sshd_config
-      line: 'PermitRootLogin no'
-      regexp: '^PermitRootLogin '
-  notify:
-      - Restart ssh
+- include: lock_root_ssh.yml
+  when: users_lock_root_ssh

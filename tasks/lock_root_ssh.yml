@@ -1,0 +1,18 @@
+---
+# tasks file for locking root ssh
+- name: Create ssh directory in case SSH isn't installed
+  file:
+      path: /etc/ssh
+      owner: root
+      group: 0
+      mode: 0o0755
+      state: directory
+
+- name: Disable root login via SSH
+  lineinfile:
+      create: yes
+      dest: /etc/ssh/sshd_config
+      line: 'PermitRootLogin no'
+      regexp: '^PermitRootLogin '
+  notify:
+      - Restart ssh

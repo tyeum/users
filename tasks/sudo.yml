@@ -1,0 +1,45 @@
+---
+# tasks file for sudoers
+- name: APT install sudo
+  when: ansible_pkg_mgr == 'apt'
+  apt:
+      name: sudo
+      state: present
+      update_cache: yes
+      cache_valid_time: 3600
+
+- name: pkg install sudo
+  when: ansible_pkg_mgr == 'openbsd_pkg' and ansible_distribution_release|version_compare('5.7', '>')
+  openbsd_pkg:
+      name: '{{ users_sudo_pkg[ansible_distribution_release] }}'
+      state: present
+
+- name: Create sudoers.d directory
+  file:
+      path: /etc/sudoers.d
+      state: directory
+      owner: root
+      group: 0
+      mode: 0o0755
+
+- name: Include sudoers.d/*
+  lineinfile:
+      dest: /etc/sudoers
+      line: '#includedir /etc/sudoers.d'
+      state: present
+
+- name: Allow sudo without password to the sudoers group
+  lineinfile:
+      dest: '/etc/sudoers.d/50_sudoers'
+      line: '%sudoers ALL=(ALL) NOPASSWD: ALL'
+      regexp: '^%sudoers'
+      state: present
+      create: yes
+      owner: root
+      group: 0
+      mode: 0o0440
+
+- name: Create sudoers group
+  group:
+      name: sudoers
+      state: present
