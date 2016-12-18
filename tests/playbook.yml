@@ -1,11 +1,11 @@
 ---
 - hosts: users-openbsd
   gather_facts: false
-  roles: [adarnimrod.openbsd-bootstrap]
+  roles: [openbsd-bootstrap]
 
 - hosts: users-xenial
   gather_facts: false
-  roles: [adarnimrod.debian-bootstrap]
+  roles: [debian-bootstrap]
 
 - hosts: all
   vars:
@@ -36,6 +36,7 @@
         service:
             name: ssh
             state: started
+  strategy: free
   roles:
     - role: users
   post_tasks: # For testing purposes
