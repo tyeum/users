@@ -9,7 +9,8 @@ aliases_file:
     Debian: /etc/aliases
 
 users_sudo_pkg:
-    5.8: sudo-1.8.14.3
-    5.9: sudo-1.8.15
+    '5.8': sudo-1.8.14.3
+    '5.9': sudo-1.8.15
+    '6.0': sudo-1.8.17.1
 
 users_unique_groups: '{{ users|selectattr("groups", "defined")|sum(attribute="groups", start=[])|list|unique }}'
