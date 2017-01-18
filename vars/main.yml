@@ -14,3 +14,5 @@ users_sudo_pkg:
     '6.0': sudo-1.8.17.1
 
 users_unique_groups: '{{ users|selectattr("groups", "defined")|sum(attribute="groups", start=[])|list|unique }}'
+
+users_sudo_group: "{{ 'wheel' if ansible_os_family == 'OpenBSD' else 'sudo' }}"

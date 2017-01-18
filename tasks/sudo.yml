@@ -30,16 +30,11 @@
 
 - name: Allow sudo without password to the sudoers group
   lineinfile:
-      dest: '/etc/sudoers.d/50_sudoers'
-      line: '%sudoers ALL=(ALL) NOPASSWD: ALL'
-      regexp: '^%sudoers'
+      dest: '/etc/sudoers.d/99_sudoers'
+      line: '%{{ users_sudo_group }} ALL=(ALL) NOPASSWD: ALL'
+      regexp: '^%{{ users_sudo_group }}'
       state: present
       create: yes
       owner: root
       group: 0
       mode: 0o0440
-
-- name: Create sudoers group
-  group:
-      name: sudoers
-      state: present
