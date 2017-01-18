@@ -1,5 +1,5 @@
 ---
-- hosts: users-openbsd
+- hosts: users-openbsd*
   gather_facts: false
   roles: [openbsd-bootstrap]
 

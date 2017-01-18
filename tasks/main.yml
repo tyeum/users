@@ -1,5 +1,6 @@
 ---
 # tasks file for users
+
 - name: Assertions
   assert:
     that:
