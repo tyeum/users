@@ -5,6 +5,7 @@ users_use_sudo: True
 users:
     - name: root
       password: '*************'
+      comment: '{{ ansible_hostname }} root'
       #shell: /bin/bash
       #uid: 0
       #groups: sudoers

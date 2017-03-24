@@ -35,6 +35,7 @@
       state: present
       uid: '{{ item.uid|default(omit) }}'
       password: '{{ item.password|default(omit) }}'
+      comment: '{{ item.comment|default(omit) }}'
 
 - name: Add public keys
   with_items: '{{ users }}'

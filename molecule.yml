@@ -31,15 +31,18 @@ vagrant:
     box: ubuntu/trusty32
   - name: precise
     box: hashicorp/precise32
+  - name: stretch
+    box: remram/debian-9-i386
   - name: jessie
-    box: debian/jessie32
+    box: deb/jessie-i386
   - name: wheezy
-    box: debian/wheezy32
+    box: bmorg/debian-wheezy-i386
   instances:
   - name: users
     options:
         append_platform_to_hostname: yes
   raw_config_args:
+  - 'vm.boot_timeout = 600'
   - 'vm.synced_folder ".", "/vagrant", disabled: true'
   - 'vbguest.auto_update = false if Vagrant.has_plugin?("vbguest")'
   - 'landrush.enabled = false if Vagrant.has_plugin?("landrush")'
@@ -47,49 +50,5 @@ vagrant:
   - |
       vm.provider "virtualbox" do |v|
         v.customize "pre-boot", ["modifyvm", :id, "--hwvirtex", "off"]
+        v.memory = ENV['VBOX_MEMORY'].to_i if ENV.has_key?('VBOX_MEMORY')
       end
-
-docker:
-  containers:
-  - name: users-xenial
-    image: ubuntu
-    image_version: xenial
-    command: /sbin/init
-    privileged: True
-    volume_mounts:
-      - /sys/fs/cgroup:/sys/fs/cgroup
-      - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
-    environment:
-        DEBIAN_FRONTEND: noninteractive
-        container: docker
-  - name: users-trusty
-    image: ubuntu-upstart
-    image_version: trusty
-    command: /sbin/init
-    privileged: True
-    environment:
-        DEBIAN_FRONTEND: noninteractive
-        container: docker
-  - name: users-precise
-    image: ubuntu
-    image_version: precise
-    environment:
-        DEBIAN_FRONTEND: noninteractive
-        container: docker
-  - name: users-jessie
-    image: debian
-    image_version: jessie
-    command: /sbin/init
-    privileged: True
-    volume_mounts:
-      - /sys/fs/cgroup:/sys/fs/cgroup
-      - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
-    environment:
-        DEBIAN_FRONTEND: noninteractive
-        container: docker
-  - name: users-wheezy
-    image: debian
-    image_version: wheezy
-    environment:
-        DEBIAN_FRONTEND: noninteractive
-        container: docker
