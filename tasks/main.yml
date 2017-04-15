@@ -11,8 +11,8 @@
         # OpenBSD 5.7 was the last version that came with sudo installed.
         - >
             ansible_os_family != 'OpenBSD' or
-            ansible_distribution_release|version_compare('5.7', '<=') or
-            ansible_distribution_release in users_sudo_pkg or
+            ansible_distribution_version|version_compare('5.7', '<=') or
+            ansible_distribution_version in users_sudo_pkg or
             not users_use_sudo
 
 - include: sudo.yml
