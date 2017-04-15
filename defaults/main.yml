@@ -1,5 +1,7 @@
 ---
 # defaults file for users
+
+users_prune: False
 users_lock_root_ssh: True
 users_use_sudo: True
 users:

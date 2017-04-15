@@ -46,9 +46,15 @@
         service:
             name: ssh
             state: started
+
+      - name: Create user to prune
+        user:
+            name: prune
+            state: present
   strategy: free
   roles:
     - role: users
+      users_prune: True
   post_tasks: # For testing purposes
       - name: Create .ssh directory
         file:

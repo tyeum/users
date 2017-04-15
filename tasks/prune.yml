@@ -1,0 +1,12 @@
+---
+
+- name: Get list of users
+  getent:
+      database: passwd
+
+- name: Prune users
+  with_items: '{{ getent_passwd }}'
+  when: getent_passwd[item][2]|int > 999 and not item in users_unique_names and not getent_passwd[item][2]|int == 65534
+  user:
+      name: '{{ item }}'
+      state: absent

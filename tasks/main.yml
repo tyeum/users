@@ -8,6 +8,7 @@
         - users is iterable
         - users_lock_root_ssh in [ True, False ]
         - users_use_sudo in [ True, False ]
+        - users_prune in [ True, False ]
         # OpenBSD 5.7 was the last version that came with sudo installed.
         - >
             ansible_os_family != 'OpenBSD' or
@@ -58,3 +59,6 @@
 
 - include: lock_root_ssh.yml
   when: users_lock_root_ssh
+
+- include: prune.yml
+  when: users_prune
