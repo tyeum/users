@@ -65,15 +65,15 @@
   post_tasks: # For testing purposes
       - name: Create .ssh directory
         file:
-            path: ~/.ssh
+            path: /root/.ssh
             state: directory
 
       - name: Copy private key
         copy:
             src: id_rsa
-            dest: ~/.ssh/id_rsa
+            dest: /root/.ssh/id_rsa
             mode: 0o0400
 
       - name: Add localhost key to known hosts
         changed_when: False
-        shell: 'ssh-keyscan localhost >> ~/.ssh/known_hosts'
+        shell: 'ssh-keyscan localhost >> /root/.ssh/known_hosts'
