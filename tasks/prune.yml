@@ -11,6 +11,8 @@
   register: users_whoami
 
 - name: Get the nobody uid
+  become: False
+  changed_when: False
   command: id -u nobody
   register: users_nobody_uid
 
