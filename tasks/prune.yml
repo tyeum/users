@@ -10,3 +10,5 @@
   user:
       name: '{{ item }}'
       state: absent
+  register: users_prune_users
+  failed_when: users_prune_users|failed and not 'is currently used' in users_prune_users.msg and not 'is currently logged in' in users_prune_users.msg

@@ -17,4 +17,4 @@ users_unique_groups: '{{ users|selectattr("groups", "defined")|sum(attribute="gr
 
 users_sudo_group: "{{ 'wheel' if ansible_os_family == 'OpenBSD' else 'sudo' }}"
 
-users_unique_names: '{{ users|map(attribute="name")|list|union([ansible_user])|unique }}'
+users_unique_names: '{{ users|map(attribute="name")|list|unique }}'
