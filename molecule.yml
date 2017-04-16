@@ -6,9 +6,9 @@ ansible:
   config_file: ../ansible.cfg
   host_vars:
       users-openbsd60:
-          - ansible_become_method: doas
+          ansible_become_method: doas
       users_openbsd59:
-          - ansible_become_method: doas
+          ansible_become_method: doas
 
 dependency:
   name: galaxy
