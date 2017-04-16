@@ -6,6 +6,7 @@
 
 - name: Get login user
   become: False
+  changed_when: False
   command: whoami
   register: users_whoami
 
