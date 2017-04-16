@@ -1,5 +1,7 @@
 ---
 # defaults file for users
+
+users_prune: False
 users_lock_root_ssh: True
 users_use_sudo: True
 users:
@@ -8,7 +10,7 @@ users:
       comment: '{{ ansible_hostname }} root'
       #shell: /bin/bash
       #uid: 0
-      #groups: sudoers
+      #groups: '{{ users_sudo_group }}'
       #pubkeys:
       #- '{{ lookup("file", "id_rsa.pub") }}'
       #email: none@nowhere.com

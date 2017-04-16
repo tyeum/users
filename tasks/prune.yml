@@ -1,0 +1,24 @@
+---
+
+- name: Get list of users
+  getent:
+      database: passwd
+
+- name: Get login user
+  become: False
+  changed_when: False
+  command: whoami
+  register: users_whoami
+
+- name: Get the nobody uid
+  become: False
+  changed_when: False
+  command: id -u nobody
+  register: users_nobody_uid
+
+- name: Prune users
+  with_items: '{{ getent_passwd|difference(users_unique_names)|difference(["nobody", users_whoami.stdout.strip()]) }}'
+  when: getent_passwd[item][2]|int > 999 and getent_passwd[item][2] != users_nobody_uid.stdout.strip() # Actual, non-system users.
+  user:
+      name: '{{ item }}'
+      state: absent

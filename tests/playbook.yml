@@ -27,7 +27,7 @@
           - name: dummy
             groups:
                 - people
-                - sudoers
+                - '{{ users_sudo_group }}'
             pubkeys:
                 - '{{ lookup("file", "id_rsa.pub") }}'
           - name: person
@@ -46,21 +46,34 @@
         service:
             name: ssh
             state: started
+
+      - name: Was prune user already created during the test
+        stat:
+            path: /home/prune
+        register: users_prune_home
+
+        # Don't create the user again during the Molecule idempotence test.
+      - name: Create user to prune
+        when: not users_prune_home.stat.exists
+        user:
+            name: prune
+            state: present
   strategy: free
   roles:
     - role: users
+      users_prune: True
   post_tasks: # For testing purposes
       - name: Create .ssh directory
         file:
-            path: '{{ ansible_user_dir }}/.ssh'
+            path: /root/.ssh
             state: directory
 
       - name: Copy private key
         copy:
             src: id_rsa
-            dest: '{{ ansible_user_dir }}/.ssh/id_rsa'
+            dest: /root/.ssh/id_rsa
             mode: 0o0400
 
       - name: Add localhost key to known hosts
         changed_when: False
-        shell: 'ssh-keyscan localhost >> ~/.ssh/known_hosts'
+        shell: 'ssh-keyscan localhost >> /root/.ssh/known_hosts'
