@@ -27,7 +27,7 @@
           - name: dummy
             groups:
                 - people
-                - sudoers
+                - '{{ users_sudo_group }}'
             pubkeys:
                 - '{{ lookup("file", "id_rsa.pub") }}'
           - name: person

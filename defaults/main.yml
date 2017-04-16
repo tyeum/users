@@ -10,7 +10,7 @@ users:
       comment: '{{ ansible_hostname }} root'
       #shell: /bin/bash
       #uid: 0
-      #groups: sudoers
+      #groups: '{{ users_sudo_group }}'
       #pubkeys:
       #- '{{ lookup("file", "id_rsa.pub") }}'
       #email: none@nowhere.com
