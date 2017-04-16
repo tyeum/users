@@ -65,13 +65,13 @@
   post_tasks: # For testing purposes
       - name: Create .ssh directory
         file:
-            path: '{{ ansible_user_dir }}/.ssh'
+            path: ~/.ssh
             state: directory
 
       - name: Copy private key
         copy:
             src: id_rsa
-            dest: '{{ ansible_user_dir }}/.ssh/id_rsa'
+            dest: ~/.ssh/id_rsa
             mode: 0o0400
 
       - name: Add localhost key to known hosts
