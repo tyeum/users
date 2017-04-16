@@ -4,11 +4,14 @@
   getent:
       database: passwd
 
+- name: Get login user
+  become: False
+  command: whoami
+  register: users_whoami
+
 - name: Prune users
   with_items: '{{ getent_passwd|difference(users_unique_names) }}'
-  when: getent_passwd[item][2]|int > 999 and getent_passwd[item][2]|int != 65534
+  when: getent_passwd[item][2]|int > 999 and getent_passwd[item][2]|int != 65534 and item != users_whoami.stdout.strip()
   user:
       name: '{{ item }}'
       state: absent
-  register: users_prune_users
-  failed_when: users_prune_users|failed and not 'is currently used' in users_prune_users.msg and not 'is currently logged in' in users_prune_users.msg
