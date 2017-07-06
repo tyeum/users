@@ -11,7 +11,7 @@
 - name: pkg install sudo
   when: ansible_pkg_mgr == 'openbsd_pkg' and ansible_distribution_version|version_compare('5.7', '>')
   openbsd_pkg:
-      name: '{{ users_sudo_pkg[ansible_distribution_version] }}'
+      name: sudo%1.8
       state: present
 
 - name: Create sudoers.d directory
