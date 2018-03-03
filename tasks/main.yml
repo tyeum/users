@@ -11,7 +11,7 @@
         - users_prune in [ True, False ]
         # OpenBSD 5.7 was the last version that came with sudo installed.
 
-- include: sudo.yml
+- import_tasks: sudo.yml
   when: users_use_sudo
 
 - name: Create groups
@@ -52,8 +52,8 @@
   notify:
       - Update SMTPd database
 
-- include: lock_root_ssh.yml
+- import_tasks: lock_root_ssh.yml
   when: users_lock_root_ssh
 
-- include: prune.yml
+- import_tasks: prune.yml
   when: users_prune
